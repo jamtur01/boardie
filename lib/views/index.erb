@@ -1,0 +1,32 @@
+<br />
+
+<h1>Welcome to <%= @app_name %></h1>
+
+<br />
+
+<div id="container"> 
+<div id="col_one">
+      <p>Backlog - Unreviewed Tickets</p>
+      <% @issues.each do |issue| %>
+         <% if issue["status"]["id"] == 10 then %>
+         <p><a href=/issue/<%= issue["id"] %>><%= issue["id"] %></a> <%= issue["subject"] %></p>
+         <% end %>
+       <% end %>
+</div>
+
+<div id="col_two">
+     <p>In Progress - Accepted tickets</p>
+      <% @issues.each do |issue| %>
+           <% if issue["status"]["id"] == 8 then %>
+           <p><a href=/issue/<%= issue["id"] %>><%= issue["id"] %></a> <%= issue["subject"] %></p>
+           <% end %>
+      <% end %>
+</div>
+
+<div id="col_three">Column Three Column Three Column Three Column Three Column Three Column Three Column Three Column Three Column Three Column Three</div> 
+<div id="col_four">Colimn Four Column Four Column Four Column Four Column Four Column Four Column Four Column Four Column Four Column Four Column Four Column Four Column Four Column Four Column Four Column Four Column Four</div> 
+<div id="col_five">Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five</div> 
+<br style="clear: both;" /> <!-- Included to force the container to wrap the columns -->
+</div> 
+
+

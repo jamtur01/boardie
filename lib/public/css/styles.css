@@ -1,0 +1,63 @@
+html
+{
+  background: #141414;
+}
+
+body
+{
+  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-size: 1em;
+  line-height: 1.4em;
+  color: #ccc;
+  height: 100%;
+}
+
+div.spacer {
+  clear: both;
+  }
+
+h1,h2
+ {
+   text-align: center;
+ }
+
+#container { 
+height: 100%; 
+padding: 5px; 
+background: #000; 
+}
+
+#col_one { 
+margin: 0; /* Applied to first column only in lieu of padding (personal thing) */ 
+width: 18%; /* Allows for fluid design. Can be set to pixels */ 
+float: left; 
+border: thin solid #fff; /* again, just so you can see the different columns */ 
+}
+
+#col_two { 
+margin: 0 0 0 10px; /* Puts a 10 pixel space between columns (left side) - think cellspacing */ 
+width: 18%; 
+float: left; 
+border: thin solid #fff; /* again, just so you can see the different columns */ 
+}
+
+#col_three { 
+margin: 0 0 0 10px; /* Puts a 10 pixel space between columns (left side) - think cellspacing */ 
+width: 18%; 
+float: left; 
+border: thin solid #fff; /* again, just so you can see the different columns */ 
+}
+
+#col_four { 
+margin: 0 0 0 10px; /* Puts a 10 pixel space between columns (left side) - think cellspacing */ 
+width: 18%; 
+float: left; 
+border: thin solid #fff; /* again, just so you can see the different columns */ 
+}
+
+#col_five { 
+margin: 0 0 0 10px; /* Puts a 10 pixel space between columns (left side) - think cellspacing */ 
+width: 18%; 
+float: left; 
+border: thin solid #fff; /* again, just so you can see the different columns */ 
+}
