@@ -15,6 +15,6 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
-  s.add_dependency(%q<rest_client>, [">= 0"])
+  s.add_dependency(%q<rest-client>, [">= 0"])
   s.add_dependency(%q<json>, [">= 0"])
 end
