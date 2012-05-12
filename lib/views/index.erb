@@ -24,7 +24,7 @@
      <p class="header">Blocked</p>
       <% @issues.each do |issue| %>
            <% if issue["status"]["id"] == 12 then %>
-           <p><a href=<%= @site %>/issues/<%= issue["id"] %> rel="external"><%= issue["id"] %></a> <%= issue["subject"] %>
+           <p><a href="<%= @site %>/issues/<%= issue["id"] %>" rel="external"><%= issue["id"] %></a> <%= issue["subject"] %>
            <% if issue["assigned_to"] then %>(<%= issue["assigned_to"]["name"] %>)<% end %>
            </p><% end %>
       <% end %>
@@ -36,7 +36,7 @@
      <p class="header">In Progress</p>
       <% @issues.each do |issue| %>
            <% if issue["status"]["id"] == 8 then %>
-           <p><a href=<%= @site %>/issues/<%= issue["id"] %> rel="external"><%= issue["id"] %></a> <%= issue["subject"] %>
+           <p><a href="<%= @site %>/issues/<%= issue["id"] %>" rel="external"><%= issue["id"] %></a> <%= issue["subject"] %>
            <% if issue["assigned_to"] then %>(<%= issue["assigned_to"]["name"] %>)<% end %>
            </p><% end %>
       <% end %>
@@ -48,7 +48,7 @@
      <p class="header">Pending Review</p>
       <% @issues.each do |issue| %>
            <% if issue["status"]["id"] == (14 or 18) then %>
-           <p><a href=<%= @site %>/issues/<%= issue["id"] %> rel="external"><%= issue["id"] %></a> <%= issue["subject"] %>
+           <p><a href="<%= @site %>/issues/<%= issue["id"] %>" rel="external"><%= issue["id"] %></a> <%= issue["subject"] %>
            <% if issue["assigned_to"] then %>(<%= issue["assigned_to"]["name"] %>)<% end %>
            </p><% end %>
       <% end %>
@@ -60,7 +60,7 @@
      <p class="header">In Production</p>
       <% @issues.each do |issue| %>
            <% if issue["status"]["id"] == 5 then %>
-           <p><a href=<%= @site %>/issues/<%= issue["id"] %> rel="external"><%= issue["id"] %></a> <%= issue["subject"] %>
+           <p><a href="<%= @site %>/issues/<%= issue["id"] %>" rel="external"><%= issue["id"] %></a> <%= issue["subject"] %>
            <% if issue["assigned_to"] then %>(<%= issue["assigned_to"]["name"] %>)<% end %>
            </p><% end %>
       <% end %>

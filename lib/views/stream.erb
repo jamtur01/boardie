@@ -17,7 +17,7 @@
     <tr>
         <td><a href="<%= @site %>/issues/<%= issue["id"] %>" rel="external"><%= issue["id"] %></a></td>
         <td><%= issue["subject"] %></td>
-        <td><% if issue["assigned_to"] then %>(<%= issue["assigned_to"]["name"] %>)<% end %></td>
+        <td><% if issue["assigned_to"] then %><%= issue["assigned_to"]["name"] %><% end %></td>
       </tr>
   <% end %>
 </table>
