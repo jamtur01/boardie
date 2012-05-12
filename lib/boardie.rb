@@ -4,6 +4,7 @@ require 'sinatra/static_assets'
 require 'rest_client'
 require 'json'
 require 'yaml'
+require 'pp'
 
 def load_configuration(file, name)
   if !File.exist?(file)
@@ -27,11 +28,16 @@ module Boardie
 
     before do
       @app_name = "Boardie"
+      get_issues
     end
 
     error do
       @error = "Sorry there was a nasty error! Please let Operations know that: " + env['sinatra.error']
       erb :error
+    end
+
+    not_found do
+      "Page not found"
     end
 
     helpers do
@@ -49,15 +55,50 @@ module Boardie
     end
 
     get '/' do
-      output = JSON.parse(get_issues)
-      @issues = output["issues"]
       erb :index
+    end
+
+    get %r{/stream/(.+)} do |name|
+     @name = name
+     if @workstreams.include? @name
+       get_stream_issues(@issues)
+       erb :stream
+     else
+       status 404
+     end
     end
 
     def get_issues
       @site = APP_CONFIG["redmine_site"]
-      issues = RestClient.get "#{@site}/issues.json", {:params => {'key' => "#{APP_CONFIG["redmine_key"]}", 'project_id' => "#{APP_CONFIG["redmine_project"]}"}}
-      return issues
+      redmine_data = JSON.parse(RestClient.get "#{@site}/issues.json", {:params => {'key' => "#{APP_CONFIG["redmine_key"]}", 'project_id' => "#{APP_CONFIG["redmine_project"]}", 'limit' => '200' }})
+      @issues = redmine_data["issues"]
+      @workstreams = get_ws(@issues)
+    end
+
+    def get_ws(issues)
+      ws = []
+      issues.each do |issue|
+        fields = issue["custom_fields"]
+        fields.each do |field|
+          if field["id"] == 38
+            ws << field["value"] unless ws.include? field["value"]
+          end
+        end
+      end
+      return ws.compact.reject { |s| s.nil? or s.empty? }
+    end
+
+    def get_stream_issues(issues)
+      @stream_issues = []
+      issues.each do |issue|
+        fields = issue["custom_fields"]
+        fields.each do |field|
+          if field["id"] == 38 && field["value"] == @name
+            pp field["value"], @name
+            @stream_issues << issue
+          end
+        end
+      end
     end
  end
 end

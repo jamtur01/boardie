@@ -1,0 +1,26 @@
+<br />
+
+<h1>Welcome to <%= @app_name %></h1>
+
+<p class="header">Workstream: <%= @name %></p>
+<p class="streams"><% @workstreams.each do |stream| %><a href="/stream/<%= stream %>"><%= stream %></a> <% end %></p>
+
+<div id="container">
+
+<table>
+  <tr>
+    <td class="mt">ID</td>
+    <td class="mt">Subject</td>
+    <td class="mt">Assignee</td>
+  </tr>
+  <% @stream_issues.each do |issue| %>
+    <tr>
+        <td><a href="<%= @site %>/issues/<%= issue["id"] %>" rel="external"><%= issue["id"] %></a></td>
+        <td><%= issue["subject"] %></td>
+        <td><% if issue["assigned_to"] then %>(<%= issue["assigned_to"]["name"] %>)<% end %></td>
+      </tr>
+  <% end %>
+</table>
+
+<br style="clear: both;" /> <!-- Included to force the container to wrap the columns -->
+</div>
