@@ -2,6 +2,7 @@
 
 <h1>Welcome to <%= @app_name %></h1>
 
+<h2 class="header"><a href="/">Home</a></h2>
 <p class="header">Workstream: <%= @name %></p>
 <p class="streams"><% @workstreams.each do |stream| %><a href="/stream/<%= stream %>"><%= stream %></a> <% end %></p>
 
@@ -13,8 +14,10 @@
     <td class="mt">Subject</td>
     <td class="mt">Assignee</td>
   </tr>
+  <% i = 0 %>
   <% @stream_issues.each do |issue| %>
-    <tr>
+    <% i += 1 %>
+    <tr class="<%= cycle %>">
         <td><a href="<%= @site %>/issues/<%= issue["id"] %>" rel="external"><%= issue["id"] %></a></td>
         <td><%= issue["subject"] %></td>
         <td><% if issue["assigned_to"] then %><%= issue["assigned_to"]["name"] %><% end %></td>

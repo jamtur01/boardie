@@ -12,6 +12,21 @@ body
   height: 100%;
 }
 
+a:link,
+a:visited
+{
+  color: #6c8fbf;
+  text-decoration: none;
+}
+
+a:hover,
+a:focus,
+a:active
+{
+  background: #000;
+  color: #ff3366;
+}
+
 div.spacer {
   clear: both;
   }
@@ -78,5 +93,43 @@ padding: 5px;
 
 .streams {
 text-align: center;
+}
+
+table {
+  border: 1px solid white;
+  border-collapse: collapse;
+  width: 95%;
+}
+td, th {
+  font-size: 1em;
+  text-align: center;
+  padding: 3px 7px 2px 7px;
+  border: 1px solid white;
+}
+th {
+  font-size: 1.1em;
+  text-align: center;
+  padding-top: 5px;
+  padding-bottom: 4px;
+}
+td.sh {
+  font-weight: bold;
+}
+td.mt {
+    font-weight: bold;
+    text-align: left;
+}
+td.mtv {
+    text-align: right;
+}
+
+tr.even td {
+  color: #ccc;
+  text-align: left;
+}
+
+tr.odd td {
+  color: #;
+  text-align: left;
 }
 
