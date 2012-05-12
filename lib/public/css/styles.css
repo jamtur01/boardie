@@ -61,3 +61,12 @@ width: 18%;
 float: left; 
 border: thin solid #fff; /* again, just so you can see the different columns */ 
 }
+
+.header {
+font-weight: bold;
+text-align: center;
+}
+
+.col {
+padding: 5px;
+}

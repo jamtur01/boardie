@@ -55,7 +55,8 @@ module Boardie
     end
 
     def get_issues
-      issues = RestClient.get "#{APP_CONFIG["redmine_site"]}/issues.json", {:params => {'key' => "#{APP_CONFIG["redmine_key"]}", 'project_id' => "#{APP_CONFIG["redmine_project"]}"}}
+      @site = APP_CONFIG["redmine_site"]
+      issues = RestClient.get "#{@site}/issues.json", {:params => {'key' => "#{APP_CONFIG["redmine_key"]}", 'project_id' => "#{APP_CONFIG["redmine_project"]}"}}
       return issues
     end
  end

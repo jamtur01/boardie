@@ -4,29 +4,66 @@
 
 <br />
 
-<div id="container"> 
+<div id="container">
 <div id="col_one">
-      <p>Backlog - Unreviewed Tickets</p>
+      <div class="col">
+      <p class="header">Backlog</p>
       <% @issues.each do |issue| %>
          <% if issue["status"]["id"] == 10 then %>
-         <p><a href=/issue/<%= issue["id"] %>><%= issue["id"] %></a> <%= issue["subject"] %></p>
+         <p><a href=<%= @site %>/issues/<%= issue["id"] %>><%= issue["id"] %></a> <%= issue["subject"] %>
+         <% if issue["assigned_to"] then %>(<%= issue["assigned_to"]["name"] %>)<% end %>
+         </p>
          <% end %>
        <% end %>
+       </div>
 </div>
 
 <div id="col_two">
-     <p>In Progress - Accepted tickets</p>
+     <div class="col">
+     <p class="header">Blocked</p>
       <% @issues.each do |issue| %>
-           <% if issue["status"]["id"] == 8 then %>
-           <p><a href=/issue/<%= issue["id"] %>><%= issue["id"] %></a> <%= issue["subject"] %></p>
-           <% end %>
+           <% if issue["status"]["id"] == 12 then %>
+           <p><a href=<%= @site %>/issues/<%= issue["id"] %>><%= issue["id"] %></a> <%= issue["subject"] %>
+           <% if issue["assigned_to"] then %>(<%= issue["assigned_to"]["name"] %>)<% end %>
+           </p><% end %>
       <% end %>
+      </div>
 </div>
 
-<div id="col_three">Column Three Column Three Column Three Column Three Column Three Column Three Column Three Column Three Column Three Column Three</div> 
-<div id="col_four">Colimn Four Column Four Column Four Column Four Column Four Column Four Column Four Column Four Column Four Column Four Column Four Column Four Column Four Column Four Column Four Column Four Column Four</div> 
-<div id="col_five">Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five Column Five</div> 
+<div id="col_three">
+     <div class="col">
+     <p class="header">In Progress</p>
+      <% @issues.each do |issue| %>
+           <% if issue["status"]["id"] == 8 then %>
+           <p><a href=<%= @site %>/issues/<%= issue["id"] %>><%= issue["id"] %></a> <%= issue["subject"] %>
+           <% if issue["assigned_to"] then %>(<%= issue["assigned_to"]["name"] %>)<% end %>
+           </p><% end %>
+      <% end %>
+      </div>
+</div>
+
+<div id="col_four">
+     <div class="col">
+     <p class="header">Pending Review</p>
+      <% @issues.each do |issue| %>
+           <% if issue["status"]["id"] == (14 or 18) then %>
+           <p><a href=<%= @site %>/issues/<%= issue["id"] %>><%= issue["id"] %></a> <%= issue["subject"] %>
+           <% if issue["assigned_to"] then %>(<%= issue["assigned_to"]["name"] %>)<% end %>
+           </p><% end %>
+      <% end %>
+      </div>
+</div>
+
+<div id="col_five">
+     <div class="col">
+     <p class="header">In Production</p>
+      <% @issues.each do |issue| %>
+           <% if issue["status"]["id"] == 5 then %>
+           <p><a href=<%= @site %>/issues/<%= issue["id"] %>><%= issue["id"] %></a> <%= issue["subject"] %>
+           <% if issue["assigned_to"] then %>(<%= issue["assigned_to"]["name"] %>)<% end %>
+           </p><% end %>
+      <% end %>
+      </div>
+</div>
 <br style="clear: both;" /> <!-- Included to force the container to wrap the columns -->
 </div> 
-
-
