@@ -1,20 +1,29 @@
-PATH
-  remote: .
-  specs:
-    boardie (0.0.1)
-      json
-      rest-client
-
 GEM
   remote: http://rubygems.org/
   specs:
+    emk-sinatra-url-for (0.2.1)
+      sinatra (>= 0.9.1.1)
     json (1.7.1)
     mime-types (1.18)
+    rack (1.4.1)
+    rack-protection (1.2.0)
+      rack
     rest-client (1.6.7)
       mime-types (>= 1.16)
+    sinatra (1.3.2)
+      rack (~> 1.3, >= 1.3.6)
+      rack-protection (~> 1.2)
+      tilt (~> 1.3, >= 1.3.3)
+    sinatra-static-assets (1.0.3)
+      sinatra (>= 1.1.0)
+    tilt (1.3.3)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  boardie!
+  emk-sinatra-url-for
+  json
+  rest-client
+  sinatra
+  sinatra-static-assets

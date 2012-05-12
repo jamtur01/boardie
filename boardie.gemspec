@@ -17,4 +17,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.add_dependency(%q<rest-client>, [">= 0"])
   s.add_dependency(%q<json>, [">= 0"])
+  s.add_dependency(%q<sinatra>, [">= 0"])
+  s.add_dependency(%q<sinatra-static-assets>, [">= 0"])
+  s.add_dependency(%q<emk-sinatra-url-for>, [">= 0"])
 end
