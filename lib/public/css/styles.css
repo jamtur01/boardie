@@ -23,39 +23,44 @@ h1,h2
 
 #container { 
 height: 100%; 
-padding: 5px; 
+padding: 10px; 
 background: #141414; 
 }
 
-#col_one { 
+#col_one {
+padding: 5px;
 margin: 0; /* Applied to first column only in lieu of padding (personal thing) */ 
 width: 18%; /* Allows for fluid design. Can be set to pixels */ 
 float: left; 
 border: thin solid #fff; /* again, just so you can see the different columns */ 
 }
 
-#col_two { 
+#col_two {
+padding: 5px;
 margin: 0 0 0 10px; /* Puts a 10 pixel space between columns (left side) - think cellspacing */ 
 width: 18%; 
 float: left; 
 border: thin solid #fff; /* again, just so you can see the different columns */ 
 }
 
-#col_three { 
+#col_three {
+padding: 5px;
 margin: 0 0 0 10px; /* Puts a 10 pixel space between columns (left side) - think cellspacing */ 
 width: 18%; 
 float: left; 
 border: thin solid #fff; /* again, just so you can see the different columns */ 
 }
 
-#col_four { 
+#col_four {
+padding: 5px;
 margin: 0 0 0 10px; /* Puts a 10 pixel space between columns (left side) - think cellspacing */ 
 width: 18%; 
 float: left; 
 border: thin solid #fff; /* again, just so you can see the different columns */ 
 }
 
-#col_five { 
+#col_five {
+padding: 5px;
 margin: 0 0 0 10px; /* Puts a 10 pixel space between columns (left side) - think cellspacing */ 
 width: 18%; 
 float: left; 
