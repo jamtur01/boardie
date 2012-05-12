@@ -1,10 +1,15 @@
 <br />
 
-<h1>Welcome to <%= @app_name %></h1>
+<h1>Welcome to <a href="/"><%= @app_name %></a></h1>
 
-<h2 class="header"><a href="/">Home</a></h2>
-<p class="header">Workstream: <%= @name %></p>
-<p class="streams"><% @workstreams.each do |stream| %><a href="/stream/<%= stream %>"><%= stream %></a> <% end %></p>
+<p class="header">Workstreams</p>
+<table class="workstreams">
+<tr>
+   <% @workstreams.sort.each do |stream| %><td><a href="/stream/<%= stream %>"><%= stream %></a></td> <% end %>
+</tr>
+</table>
+
+<br />
 
 <div id="container">
 

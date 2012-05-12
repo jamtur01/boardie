@@ -3,7 +3,13 @@
 <h1>Welcome to <%= @app_name %></h1>
 
 <p class="header">Workstreams</p>
-<p class="streams"><% @workstreams.each do |stream| %>* <a href="/stream/<%= stream %>"><%= stream %></a> <% end %> *</p>
+<table class="workstreams">
+<tr>
+   <% @workstreams.sort.each do |stream| %><td><a href="/stream/<%= stream %>"><%= stream %></a></td> <% end %>
+</tr>
+</table>
+
+<br />
 
 <div id="container">
 <div id="col_one">
