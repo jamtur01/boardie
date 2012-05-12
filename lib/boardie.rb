@@ -4,7 +4,6 @@ require 'sinatra/static_assets'
 require 'rest_client'
 require 'json'
 require 'yaml'
-require 'pp'
 
 def load_configuration(file, name)
   if !File.exist?(file)
@@ -94,7 +93,6 @@ module Boardie
         fields = issue["custom_fields"]
         fields.each do |field|
           if field["id"] == 38 && field["value"] == @name
-            pp field["value"], @name
             @stream_issues << issue
           end
         end
