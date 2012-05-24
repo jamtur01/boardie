@@ -22,7 +22,7 @@
       <% @issues.each do |issue| %>
          <% if issue["status"]["id"] == 10 then %>
          <a href="<%= @site %>/issues/<%= issue["id"] %>" rel="external"><%= issue["id"] %></a> <%= issue["subject"] %>
-         <% if issue["assigned_to"] then %>(<%= issue["assigned_to"]["name"] %>)<% end %></br >
+         <% if issue["assigned_to"] then %>(<%= issue["assigned_to"]["name"] %>)<% end %><br />
          <% end %>
        <% end %>
 </td>
