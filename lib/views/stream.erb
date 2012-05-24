@@ -1,9 +1,4 @@
-<br />
-
-<h1>Welcome to <a href="/"><%= @app_name %></a></h1>
-
-<p class="header">Workstreams</p>
-<table class="workstreams">
+<table class="table table-bordered">
 <tr>
    <% @workstreams.sort.each do |stream| %><td><a href="/stream/<%= stream %>"><%= stream %></a></td> <% end %>
 </tr>
@@ -13,7 +8,7 @@
 
 <div id="container">
 
-<table>
+<table class="table table-bordered">
   <tr>
     <td class="mt">ID</td>
     <td class="mt">Subject</td>
@@ -30,5 +25,3 @@
   <% end %>
 </table>
 
-<br style="clear: both;" /> <!-- Included to force the container to wrap the columns -->
-</div>

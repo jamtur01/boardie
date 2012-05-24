@@ -1,9 +1,4 @@
-<br />
-
-<h1>Welcome to <%= @app_name %></h1>
-
-<p class="header">Workstreams</p>
-<table class="workstreams">
+<table class="table table-bordered">
 <tr>
    <% @workstreams.sort.each do |stream| %><td><a href="/stream/<%= stream %>"><%= stream %></a></td> <% end %>
 </tr>
@@ -11,66 +6,59 @@
 
 <br />
 
-<div id="container">
-<div id="col_one">
-      <div class="col">
-      <p class="header">Backlog</p>
+<table class="table table-bordered">
+<thead>
+<tr>
+<th>Backlog</th>
+<th>Blocked</th>
+<th>In Progress</th>
+<th>Pending Review</th>
+<th>Production</th>
+</tr>
+</thead>
+</tbody>
+<tr>
+<td>
       <% @issues.each do |issue| %>
          <% if issue["status"]["id"] == 10 then %>
-         <p><a href="<%= @site %>/issues/<%= issue["id"] %>" rel="external"><%= issue["id"] %></a> <%= issue["subject"] %>
-         <% if issue["assigned_to"] then %>(<%= issue["assigned_to"]["name"] %>)<% end %>
-         </p>
+         <a href="<%= @site %>/issues/<%= issue["id"] %>" rel="external"><%= issue["id"] %></a> <%= issue["subject"] %>
+         <% if issue["assigned_to"] then %>(<%= issue["assigned_to"]["name"] %>)<% end %></br >
          <% end %>
        <% end %>
-       </div>
-</div>
-
-<div id="col_two">
-     <div class="col">
-     <p class="header">Blocked</p>
+</td>
+<td>
       <% @issues.each do |issue| %>
            <% if issue["status"]["id"] == 12 then %>
-           <p><a href="<%= @site %>/issues/<%= issue["id"] %>" rel="external"><%= issue["id"] %></a> <%= issue["subject"] %>
-           <% if issue["assigned_to"] then %>(<%= issue["assigned_to"]["name"] %>)<% end %>
-           </p><% end %>
+           <a href="<%= @site %>/issues/<%= issue["id"] %>" rel="external"><%= issue["id"] %></a> <%= issue["subject"] %>
+           <% if issue["assigned_to"] then %>(<%= issue["assigned_to"]["name"] %>)<% end %><br />
+           <% end %>
       <% end %>
-      </div>
-</div>
-
-<div id="col_three">
-     <div class="col">
-     <p class="header">In Progress</p>
+</td>
+<td>
       <% @issues.each do |issue| %>
-           <% if issue["status"]["id"] == 8 then %>
-           <p><a href="<%= @site %>/issues/<%= issue["id"] %>" rel="external"><%= issue["id"] %></a> <%= issue["subject"] %>
-           <% if issue["assigned_to"] then %>(<%= issue["assigned_to"]["name"] %>)<% end %>
-           </p><% end %>
+      <% if issue["status"]["id"] == 8 then %>
+           <a href="<%= @site %>/issues/<%= issue["id"] %>" rel="external"><%= issue["id"] %></a> <%= issue["subject"] %>
+           <% if issue["assigned_to"] then %>(<%= issue["assigned_to"]["name"] %>)<% end %><br />
+           <% end %>
       <% end %>
-      </div>
-</div>
-
-<div id="col_four">
-     <div class="col">
-     <p class="header">Pending Review</p>
+</td>
+<td>
       <% @issues.each do |issue| %>
            <% if issue["status"]["id"] == (14 or 18) then %>
-           <p><a href="<%= @site %>/issues/<%= issue["id"] %>" rel="external"><%= issue["id"] %></a> <%= issue["subject"] %>
-           <% if issue["assigned_to"] then %>(<%= issue["assigned_to"]["name"] %>)<% end %>
-           </p><% end %>
+           <a href="<%= @site %>/issues/<%= issue["id"] %>" rel="external"><%= issue["id"] %></a> <%= issue["subject"] %>
+           <% if issue["assigned_to"] then %>(<%= issue["assigned_to"]["name"] %>)<% end %><br />
+           <% end %>
       <% end %>
-      </div>
-</div>
-
-<div id="col_five">
-     <div class="col">
-     <p class="header">In Production</p>
+</td>
+<td>
       <% @issues.each do |issue| %>
            <% if issue["status"]["id"] == 5 then %>
-           <p><a href="<%= @site %>/issues/<%= issue["id"] %>" rel="external"><%= issue["id"] %></a> <%= issue["subject"] %>
-           <% if issue["assigned_to"] then %>(<%= issue["assigned_to"]["name"] %>)<% end %>
-           </p><% end %>
+           <a href="<%= @site %>/issues/<%= issue["id"] %>" rel="external"><%= issue["id"] %></a> <%= issue["subject"] %>
+           <% if issue["assigned_to"] then %>(<%= issue["assigned_to"]["name"] %>)<% end %><br />
+           <% end %>
       <% end %>
-      </div>
-</div>
-<br style="clear: both;" /> <!-- Included to force the container to wrap the columns -->
-</div>
+</td>
+</tr>
+</tbody>
+</table>
+
