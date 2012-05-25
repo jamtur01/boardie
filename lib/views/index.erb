@@ -20,7 +20,7 @@
 <tr>
 <td>
       <% @issues.each do |issue| %>
-         <% if issue["status"]["id"] == 10 then %>
+         <% if (issue["status"]["id"] == 8 or issue["status"]["id"] == 12) && !issue["assigned_to"] then %>
          <a href="<%= @site %>/issues/<%= issue["id"] %>" rel="external"><%= issue["id"] %></a> <%= issue["subject"] %>
          <% if issue["assigned_to"] then %>(<%= issue["assigned_to"]["name"] %>)<% end %><br />
          <% end %>
@@ -44,7 +44,7 @@
 </td>
 <td>
       <% @issues.each do |issue| %>
-           <% if issue["status"]["id"] == (14 or 18) then %>
+           <% if issue["status"]["id"] == 14 or issue["status"]["id"] == 18 then %>
            <a href="<%= @site %>/issues/<%= issue["id"] %>" rel="external"><%= issue["id"] %></a> <%= issue["subject"] %>
            <% if issue["assigned_to"] then %>(<%= issue["assigned_to"]["name"] %>)<% end %><br />
            <% end %>
@@ -61,4 +61,3 @@
 </tr>
 </tbody>
 </table>
-
