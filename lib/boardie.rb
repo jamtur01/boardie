@@ -2,6 +2,7 @@ require 'sinatra'
 require 'sinatra/url_for'
 require 'sinatra/static_assets'
 require 'rest_client'
+require 'data_mapper'
 require 'json'
 require 'yaml'
 
@@ -23,7 +24,25 @@ module Boardie
     end
 
     enable :logging, :dump_errors, :raise_errors
+    DataMapper.setup(:default, "sqlite3:db/boardie.db")
     enable :show_exceptions
+
+    class Ticket
+      include DataMapper::Resource
+
+      property :id, Serial
+      property :ticket_id, Integer, :key => true
+      property :status_id, Integer
+      property :status_name, String
+      property :subject, String, :length => 250
+      property :assigned_to, String
+      property :workstream, String
+
+      validates_presence_of :ticket_id
+    end
+
+    DataMapper.finalize
+    DataMapper.auto_upgrade!
 
     before do
       @app_name = "Boardie"
@@ -54,13 +73,13 @@ module Boardie
     end
 
     get '/' do
+      @issues = Ticket.all
       erb :index
     end
 
     get %r{/stream/(.+)} do |name|
-     @name = name
-     if @workstreams.include? @name
-       get_stream_issues(@issues)
+     if @workstreams.include? name
+       @stream_issues = Ticket.all(:workstream => name)
        erb :stream
      else
        status 404
@@ -70,33 +89,33 @@ module Boardie
     def get_issues
       @site = APP_CONFIG["redmine_site"]
       redmine_data = JSON.parse(RestClient.get "#{@site}/issues.json", {:params => {'key' => "#{APP_CONFIG["redmine_key"]}", 'project_id' => "#{APP_CONFIG["redmine_project"]}", 'limit' => '200' }})
-      @issues = redmine_data["issues"]
-      @workstreams = get_ws(@issues)
+
+      redmine_data["issues"].each do |issue|
+        create_record(issue)
+      end
+      ws = Ticket.all(:fields => [:workstream], :unique => true, :workstream.not => nil, :workstream.not => "")
+      @workstreams = []
+      ws.each do |stream|
+        @workstreams << stream.workstream
+      end
     end
 
-    def get_ws(issues)
-      ws = []
-      issues.each do |issue|
-        fields = issue["custom_fields"]
-        fields.each do |field|
-          if field["id"] == 38
-            ws << field["value"] unless ws.include? field["value"]
-          end
-        end
+    def create_record(issue)
+      if issue["assigned_to"]
+        assigned = issue["assigned_to"]["name"]
+      else
+        assigned = nil
       end
-      return ws.compact.reject { |s| s.nil? or s.empty? }
-    end
-
-    def get_stream_issues(issues)
-      @stream_issues = []
-      issues.each do |issue|
-        fields = issue["custom_fields"]
-        fields.each do |field|
-          if field["id"] == 38 && field["value"] == @name
-            @stream_issues << issue
-          end
-        end
-      end
+      status_id, status_name = issue["status"]["id"], issue["status"]["name"]
+      ws = issue["custom_fields"].detect { |f| f["id"] == 38 }
+      ws = ws["value"] unless ws == nil
+      ticket = Ticket.first_or_create(:ticket_id => issue["id"]).update(
+                 :ticket_id    => issue["id"],
+                 :subject      => issue["subject"],
+                 :status_id    => status_id,
+                 :status_name  => status_name,
+                 :assigned_to  => assigned,
+                 :workstream   => ws)
     end
  end
 end

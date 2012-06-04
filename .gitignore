@@ -1,4 +1,5 @@
 pkg/*
 *.gem
 .bundle
+db/boardie.db
 config/config.yml

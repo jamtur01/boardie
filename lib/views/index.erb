@@ -20,41 +20,41 @@
 <tr>
 <td>
       <% @issues.each do |issue| %>
-         <% if (issue["status"]["id"] == 8 or issue["status"]["id"] == 12) && !issue["assigned_to"] then %>
-         <a href="<%= @site %>/issues/<%= issue["id"] %>" rel="external"><%= issue["id"] %></a> <%= issue["subject"] %>
-         <% if issue["assigned_to"] then %>(<%= issue["assigned_to"]["name"] %>)<% end %><br />
+         <% if (issue.status_id == 8 or issue.status_id == 12) && !issue.assigned_to then %>
+         <a href="<%= @site %>/issues/<%= issue.ticket_id %>" rel="external"><%= issue.ticket_id %></a> <%= issue.subject %>
+         <% if issue.assigned_to then %>(<%= issue.assigned_to %>)<% end %><br />
          <% end %>
        <% end %>
 </td>
 <td>
       <% @issues.each do |issue| %>
-           <% if issue["status"]["id"] == 12 or issue["status"]["id"] == 11 then %>
-           <a href="<%= @site %>/issues/<%= issue["id"] %>" rel="external"><%= issue["id"] %></a> <%= issue["subject"] %>
-           <% if issue["assigned_to"] then %>(<%= issue["assigned_to"]["name"] %>)<% end %><br />
+           <% if issue.status_id == 12 or issue.status_id == 11 then %>
+           <a href="<%= @site %>/issues/<%= issue.ticket_id %>" rel="external"><%= issue.ticket_id %></a> <%= issue.subject %>
+           <% if issue.assigned_to then %>(<%= issue.assigned_to %>)<% end %><br />
            <% end %>
       <% end %>
 </td>
 <td>
       <% @issues.each do |issue| %>
-      <% if issue["status"]["id"] == 8 && issue["assigned_to"] then %>
-           <a href="<%= @site %>/issues/<%= issue["id"] %>" rel="external"><%= issue["id"] %></a> <%= issue["subject"] %>
-           <% if issue["assigned_to"] then %>(<%= issue["assigned_to"]["name"] %>)<% end %><br />
+      <% if issue.status_id == 8 && issue.assigned_to then %>
+           <a href="<%= @site %>/issues/<%= issue.ticket_id %>" rel="external"><%= issue.ticket_id %></a> <%= issue.subject %>
+           <% if issue.assigned_to then %>(<%= issue.assigned_to %>)<% end %><br />
            <% end %>
       <% end %>
 </td>
 <td>
       <% @issues.each do |issue| %>
-           <% if issue["status"]["id"] == 14 or issue["status"]["id"] == 18 then %>
-           <a href="<%= @site %>/issues/<%= issue["id"] %>" rel="external"><%= issue["id"] %></a> <%= issue["subject"] %>
-           <% if issue["assigned_to"] then %>(<%= issue["assigned_to"]["name"] %>)<% end %><br />
+           <% if issue.status_id == 14 or issue.status_id == 18 then %>
+           <a href="<%= @site %>/issues/<%= issue.ticket_id %>" rel="external"><%= issue.ticket_id %></a> <%= issue.subject %>
+           <% if issue.assigned_to then %>(<%= issue.assigned_to %>)<% end %><br />
            <% end %>
       <% end %>
 </td>
 <td>
       <% @issues.each do |issue| %>
-           <% if issue["status"]["id"] == 5 then %>
-           <a href="<%= @site %>/issues/<%= issue["id"] %>" rel="external"><%= issue["id"] %></a> <%= issue["subject"] %>
-           <% if issue["assigned_to"] then %>(<%= issue["assigned_to"]["name"] %>)<% end %><br />
+           <% if issue.status_id == 5 then %>
+           <a href="<%= @site %>/issues/<%= issue.ticket_id %>" rel="external"><%= issue.ticket_id %></a> <%= issue.subject %>
+           <% if issue.assigned_to then %>(<%= issue.assigned_to %>)<% end %><br />
            <% end %>
       <% end %>
 </td>

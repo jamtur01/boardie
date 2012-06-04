@@ -20,4 +20,7 @@ Gem::Specification.new do |s|
   s.add_dependency(%q<sinatra>, [">= 0"])
   s.add_dependency(%q<sinatra-static-assets>, [">= 0"])
   s.add_dependency(%q<emk-sinatra-url-for>, [">= 0"])
+  s.add_dependency(%q<sqlite3>, [">= 0"])
+  s.add_dependency(%q<data_mapper>, [">= 0"])
+  s.add_dependency(%q<dm-sqlite-adapter>, [">= 0"])
 end
