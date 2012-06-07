@@ -73,11 +73,13 @@ module Boardie
     end
 
     get '/' do
+      expires 180, :public, :must_revalidate
       @issues = Ticket.all
       erb :index
     end
 
     get %r{/stream/(.+)} do |name|
+     expires 180, :public, :must_revalidate
      if @workstreams.include? name
        @stream_issues = Ticket.all(:workstream => name)
        erb :stream
