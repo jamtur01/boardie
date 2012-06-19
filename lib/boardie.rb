@@ -100,6 +100,12 @@ module Boardie
       ws.each do |stream|
         @workstreams << stream.workstream
       end
+
+      oe = Ticket.all(:fields => [:assigned_to], :unique => true, :assigned_to.not => nil, :assigned_to.not => "")
+      @engineers = []
+      oe.each do |engine|
+        @engineers << engine.assigned_to
+      end
     end
 
     def create_record(issue)
