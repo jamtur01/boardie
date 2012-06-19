@@ -41,6 +41,17 @@
               <li class="active"><a href="/">Home</a></li>
             </ul>
           </div><!--/.nav-collapse -->
+          <ul class="nav">
+            <div class="btn-group">
+              <a class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" href="#">
+                Streams
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                <% @workstreams.sort.each do |stream| %><a href="<%= url('/stream/'+stream) %>"><%= stream %></a><% end %>
+              </ul>
+            </div>
+          </ul>
         </div>
       </div>
     </div>
