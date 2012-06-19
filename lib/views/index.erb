@@ -1,10 +1,29 @@
-<table class="table table-bordered">
-<tr>
-   <% @workstreams.sort.each do |stream| %><td><a href="<%= url('/stream/'+stream) %>"><%= stream %></a></td> <% end %>
-</tr>
-</table>
+</br>
 
-<br />
+<table class="table table-bordered">
+  <thead>
+    <tr>
+    <% @engineers.sort.each do |engine| %>
+      <th><center><%= engine %></center></th>
+    <% end %>
+    </tr>
+  </thead>
+</tbody>
+    <tr>
+    <% @engineers.sort.each do |engine| %>
+      <% owned = (@issues.find_all do |issue| issue.assigned_to == engine end).count %>
+      <% case
+       when owned < 4
+         color = 'label-success'
+       when owned == 4, owned == 5
+         color = 'label-warning'
+       when owned > 5
+        color = 'label-important'
+      end %>
+      <td class="td <%= color %>"><center><%= "#{owned}" %></center></td>
+    <% end %>
+    </tr>
+</table>
 
 <table class="table table-bordered">
 <thead>
