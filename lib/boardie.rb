@@ -81,6 +81,7 @@ module Boardie
     get %r{/stream/(.+)} do |name|
      expires 180, :public, :must_revalidate
      if @workstreams.include? name
+       closed_count(name)
        @stream_issues = Ticket.all(:workstream => name)
        erb :stream
      else
@@ -116,6 +117,13 @@ module Boardie
       oe.each do |engine|
         @engineers << engine.assigned_to
       end
+    end
+
+    def closed_count(stream)
+      @site = APP_CONFIG["redmine_site"]
+      redmine_data = JSON.parse(RestClient.get "#{@site}/issues.json", {:params => {'key' => "#{APP_CONFIG["redmine_key"]}", 'project_id' => "#{APP_CONFIG["redmine_project"]}", 'limit' => '200', 'status_id' => 'closed', 'cf_38' => stream }})
+
+      @closed_count = redmine_data["issues"].count
     end
 
     def create_record(issue)
