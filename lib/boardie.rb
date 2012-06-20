@@ -88,6 +88,16 @@ module Boardie
      end
     end
 
+    get %r{/engineer/(.+)} do |name|
+     expires 180, :public, :must_revalidate
+     if @engineers.include? name
+       @engineer_issues = Ticket.all(:assigned_to => name)
+       erb :engineer
+     else
+       status 404
+     end
+    end
+
     def get_issues
       @site = APP_CONFIG["redmine_site"]
       redmine_data = JSON.parse(RestClient.get "#{@site}/issues.json", {:params => {'key' => "#{APP_CONFIG["redmine_key"]}", 'project_id' => "#{APP_CONFIG["redmine_project"]}", 'limit' => '200' }})

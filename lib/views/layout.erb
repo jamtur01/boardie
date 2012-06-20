@@ -42,15 +42,29 @@
             </ul>
           </div><!--/.nav-collapse -->
           <ul class="nav">
-            <div class="btn-group">
-              <a class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" href="#">
-                Streams
-                <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu">
-                <% @workstreams.sort.each do |stream| %><a href="<%= url('/stream/'+stream) %>"><%= stream %></a><% end %>
-              </ul>
-            </div>
+            <li class="active">
+              <div class="btn-group">
+                <a class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" href="#">
+                  Streams
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                  <% @workstreams.sort.each do |stream| %><a href="<%= url('/stream/'+stream) %>"><%= stream %></a><% end %>
+                </ul>
+              </div>
+            </li>
+          <ul class="nav">
+            <li class="active">
+              <div class="btn-group">
+                <a class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" href="#">
+                  Engineers
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                  <% @engineers.sort.each do |engine| %><a href="<%= url('/engineer/'+engine) %>"><%= engine %></a><% end %>
+                </ul>
+              </div>
+            </li>
           </ul>
         </div>
       </div>
