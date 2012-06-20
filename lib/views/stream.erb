@@ -1,5 +1,10 @@
 <br />
 
+<div class="progress">
+  <% percent = (@closed_count.to_f / (@closed_count + @stream_issues.count) * 100) %>
+  <div class="bar" style="width: <%= percent %>%"><%= "#{percent.to_i}% Completed" %></div>
+</div>
+
 <div id="container">
 
 <table class="table table-bordered">
@@ -18,4 +23,3 @@
       </tr>
   <% end %>
 </table>
-
