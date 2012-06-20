@@ -4,4 +4,6 @@ gem "json"
 gem "sinatra"
 gem "sinatra-static-assets"
 gem "emk-sinatra-url-for"
-
+gem "data_mapper"
+gem "dm-sqlite-adapter"
+gem "sqlite3"
