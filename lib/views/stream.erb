@@ -12,7 +12,7 @@
   <% @stream_issues.each do |issue| %>
     <% i += 1 %>
     <tr class="<%= cycle %>">
-        <td><a href="<%= @site %>/issues/<%= issue.id %>" rel="external"><%= issue.id %></a></td>
+        <td><a href="<%= @site %>/issues/<%= issue.ticket_id %>" rel="external"><%= issue.ticket_id %></a></td>
         <td><%= issue.subject %></td>
         <td><% if issue.assigned_to then %><%= issue.assigned_to %><% end %></td>
       </tr>

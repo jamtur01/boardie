@@ -12,7 +12,7 @@
   <% @engineer_issues.each do |issue| %>
     <% i += 1 %>
     <tr class="<%= cycle %>">
-        <td><a href="<%= @site %>/issues/<%= issue.id %>" rel="external"><%= issue.id %></a></td>
+        <td><a href="<%= @site %>/issues/<%= issue.ticket_id %>" rel="external"><%= issue.ticket_id %></a></td>
         <td><%= issue.subject %></td>
         <td><% if issue.workstream then %><%= issue.workstream %><% end %></td>
       </tr>
