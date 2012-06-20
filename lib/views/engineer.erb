@@ -1,0 +1,21 @@
+<br />
+
+<div id="container">
+
+<table class="table table-bordered">
+  <tr>
+    <td class="mt">ID</td>
+    <td class="mt">Subject</td>
+    <td class="mt">Workstream</td>
+  </tr>
+  <% i = 0 %>
+  <% @engineer_issues.each do |issue| %>
+    <% i += 1 %>
+    <tr class="<%= cycle %>">
+        <td><a href="<%= @site %>/issues/<%= issue.id %>" rel="external"><%= issue.id %></a></td>
+        <td><%= issue.subject %></td>
+        <td><% if issue.workstream then %><%= issue.workstream %><% end %></td>
+      </tr>
+  <% end %>
+</table>
+
