@@ -30,7 +30,12 @@
 <tr>
 <th>Backlog</th>
 <th>Blocked</th>
-<th>In Progress</th>
+<% if @overquota == true %>
+<th class="th label-important">
+<% else %>
+<th>
+<% end %>
+In Progress</th>
 <th>Pending Review</th>
 <th>Production</th>
 </tr>

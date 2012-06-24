@@ -1,3 +1,4 @@
 redmine_site: 'https://support.example.com'
 redmine_key: abcde12334
 redmine_project: example_project
+inprogress_quota: 6

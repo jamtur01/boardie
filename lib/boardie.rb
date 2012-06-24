@@ -149,6 +149,7 @@ module Boardie
         @backlog = Ticket.all(:status_id => '8') + Ticket.all(:status_id => '10') + Ticket.all(:status_id => '17') & Ticket.all(:assigned_to => nil)
         @blocked = Ticket.all(:status_id => '11') + Ticket.all(:status_id => '12')
         @inprogress = Ticket.all(:status_id => '8') & Ticket.all(:assigned_to.not => nil)
+        @overquota = true if @inprogress.count > APP_CONFIG["inprogress_quota"]
         @review = Ticket.all(:status_id => '14') + Ticket.all(:status_id => '18')
         @prod = Ticket.all(:status_id => '5')
       end
