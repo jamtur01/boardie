@@ -58,23 +58,9 @@ module Boardie
       "Page not found"
     end
 
-    helpers do
-
-      def cycle
-        %w{even odd}[@_cycle = ((@_cycle || -1) + 1) % 2]
-      end
-
-      CYCLE = %w{even odd}
-
-      def cycle_fully_sick
-        CYCLE[@_cycle = ((@_cycle || -1) + 1) % 2]
-      end
-
-    end
-
     get '/' do
       expires 180, :public, :must_revalidate
-      @issues = Ticket.all
+      issues
       erb :index
     end
 
@@ -99,49 +85,73 @@ module Boardie
      end
     end
 
-    def get_issues
-      @site = APP_CONFIG["redmine_site"]
-      redmine_data = JSON.parse(RestClient.get "#{@site}/issues.json", {:params => {'key' => "#{APP_CONFIG["redmine_key"]}", 'project_id' => "#{APP_CONFIG["redmine_project"]}", 'limit' => '200' }})
+   helpers do
 
-      redmine_data["issues"].each do |issue|
-        create_record(issue)
-      end
-      ws = Ticket.all(:fields => [:workstream], :unique => true, :workstream.not => nil, :workstream.not => "")
-      @workstreams = []
-      ws.each do |stream|
-        @workstreams << stream.workstream
+      def cycle
+        %w{even odd}[@_cycle = ((@_cycle || -1) + 1) % 2]
       end
 
-      oe = Ticket.all(:fields => [:assigned_to], :unique => true, :assigned_to.not => nil, :assigned_to.not => "")
-      @engineers = []
-      oe.each do |engine|
-        @engineers << engine.assigned_to
+      CYCLE = %w{even odd}
+
+      def cycle_fully_sick
+        CYCLE[@_cycle = ((@_cycle || -1) + 1) % 2]
       end
-    end
 
-    def closed_count(stream)
-      @site = APP_CONFIG["redmine_site"]
-      redmine_data = JSON.parse(RestClient.get "#{@site}/issues.json", {:params => {'key' => "#{APP_CONFIG["redmine_key"]}", 'project_id' => "#{APP_CONFIG["redmine_project"]}", 'limit' => '200', 'status_id' => 'closed', 'cf_38' => stream }})
 
-      @closed_count = redmine_data["issues"].count
-    end
+      def get_issues
+        @site = APP_CONFIG["redmine_site"]
+        redmine_data = JSON.parse(RestClient.get "#{@site}/issues.json", {:params => {'key' => "#{APP_CONFIG["redmine_key"]}", 'project_id' => "#{APP_CONFIG["redmine_project"]}", 'limit' => '200' }})
 
-    def create_record(issue)
-      if issue["assigned_to"]
-        assigned = issue["assigned_to"]["name"]
-      else
-        assigned = nil
+        redmine_data["issues"].each do |issue|
+          create_record(issue)
+        end
+        ws = Ticket.all(:fields => [:workstream], :unique => true, :workstream.not => nil)
+        @workstreams = []
+        ws.each do |stream|
+          @workstreams << stream.workstream
+        end
+
+        oe = Ticket.all(:fields => [:assigned_to], :unique => true, :assigned_to.not => nil)
+        @engineers = []
+        oe.each do |engine|
+          @engineers << engine.assigned_to
+        end
       end
-      status_id, status_name = issue["status"]["id"], issue["status"]["name"]
-      ws = issue["custom_fields"].detect { |f| f["id"] == 38 }
-      ws = ws["value"] unless ws == nil
-      ticket = Ticket.first_or_create(:ticket_id => issue["id"]).update(
+
+      def closed_count(stream)
+        @site = APP_CONFIG["redmine_site"]
+        redmine_data = JSON.parse(RestClient.get "#{@site}/issues.json", {:params => {'key' => "#{APP_CONFIG["redmine_key"]}", 'project_id' => "#{APP_CONFIG["redmine_project"]}", 'limit' => '200', 'status_id' => 'closed', 'cf_38' => stream }})
+
+        @closed_count = redmine_data["issues"].count
+      end
+
+      def create_record(issue)
+        status_id, status_name = issue["status"]["id"], issue["status"]["name"]
+        if issue["assigned_to"]
+          assigned = issue["assigned_to"]["name"]
+        else
+          assigned = nil
+        end
+        ws = issue["custom_fields"].detect { |f| f["id"] == 38 }
+        ws = ws["value"] unless ws == nil
+        ws = nil if ws == ""
+        ticket = Ticket.first_or_create(:ticket_id => issue["id"]).update(
                  :ticket_id    => issue["id"],
                  :subject      => issue["subject"],
                  :status_id    => status_id,
                  :status_name  => status_name,
                  :assigned_to  => assigned,
                  :workstream   => ws)
+      end
+
+      def issues
+        @issues = Ticket.all
+        @backlog = Ticket.all(:status_id => '8') + Ticket.all(:status_id => '10') + Ticket.all(:status_id => '17') & Ticket.all(:assigned_to => nil)
+        @blocked = Ticket.all(:status_id => '11') + Ticket.all(:status_id => '12')
+        @inprogress = Ticket.all(:status_id => '8') & Ticket.all(:assigned_to.not => nil)
+        @review = Ticket.all(:status_id => '14') + Ticket.all(:status_id => '18')
+        @prod = Ticket.all(:status_id => '5')
+      end
     end
  end
 end
