@@ -11,7 +11,7 @@
 </tbody>
     <tr>
     <% @engineers.sort.each do |engine| %>
-      <% owned = (@issues.find_all do |issue| issue.assigned_to == engine end).count %>
+      <% owned = (@issues.find_all do |issue| (issue.assigned_to == engine) and (issue.status_id != 5) end).count %>
       <% case
        when owned < 4
          color = 'label-success'
