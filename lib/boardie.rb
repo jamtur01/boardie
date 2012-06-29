@@ -19,7 +19,17 @@ module Boardie
 
     register Sinatra::StaticAssets
 
-    configure do
+    configure :development do
+      log = File.new("log/development.log", "a")
+      STDOUT.reopen(log)
+      STDERR.reopen(log)
+      load_configuration("config/config.yml", "APP_CONFIG")
+    end
+
+    configure :production do
+      log = File.new("log/production.log", "a")
+      STDOUT.reopen(log)
+      STDERR.reopen(log)
       load_configuration("config/config.yml", "APP_CONFIG")
     end
 
@@ -37,6 +47,7 @@ module Boardie
       property :subject, String, :length => 250
       property :assigned_to, String
       property :workstream, String
+      property :updated_on, Date
 
       validates_presence_of :ticket_id
     end
@@ -78,14 +89,14 @@ module Boardie
     get %r{/engineer/(.+)} do |name|
      expires 180, :public, :must_revalidate
      if @engineers.include? name
-       @engineer_issues = Ticket.all(:assigned_to => name)
+       @engineer_issues = Ticket.all(:assigned_to => name, :status_id.not => 5)
        erb :engineer
      else
        status 404
      end
     end
 
-   helpers do
+    helpers do
 
       def cycle
         %w{even odd}[@_cycle = ((@_cycle || -1) + 1) % 2]
@@ -97,21 +108,21 @@ module Boardie
         CYCLE[@_cycle = ((@_cycle || -1) + 1) % 2]
       end
 
-
       def get_issues
         @site = APP_CONFIG["redmine_site"]
-        redmine_data = JSON.parse(RestClient.get "#{@site}/issues.json", {:params => {'key' => "#{APP_CONFIG["redmine_key"]}", 'project_id' => "#{APP_CONFIG["redmine_project"]}", 'limit' => '200' }})
+        redmine_data = JSON.parse(RestClient.get "#{@site}/issues.json", {:params => {'key' => "#{APP_CONFIG["redmine_key"]}", 'project_id' => "#{APP_CONFIG["redmine_project"]}", 'limit' => '200', 'status_id' => '*' }})
 
         redmine_data["issues"].each do |issue|
           create_record(issue)
         end
-        ws = Ticket.all(:fields => [:workstream], :unique => true, :workstream.not => nil)
+
+        ws = Ticket.all(:fields => [:workstream], :unique => true, :workstream.not => nil, :workstream.not => "", :status_id.not => 5)
         @workstreams = []
         ws.each do |stream|
           @workstreams << stream.workstream
         end
 
-        oe = Ticket.all(:fields => [:assigned_to], :unique => true, :assigned_to.not => nil)
+        oe = Ticket.all(:fields => [:assigned_to], :unique => true, :assigned_to.not => nil, :assigned_to.not => "", :status_id.not => 5)
         @engineers = []
         oe.each do |engine|
           @engineers << engine.assigned_to
@@ -120,7 +131,7 @@ module Boardie
 
       def closed_count(stream)
         @site = APP_CONFIG["redmine_site"]
-        redmine_data = JSON.parse(RestClient.get "#{@site}/issues.json", {:params => {'key' => "#{APP_CONFIG["redmine_key"]}", 'project_id' => "#{APP_CONFIG["redmine_project"]}", 'limit' => '200', 'status_id' => 'closed', 'cf_38' => stream }})
+        redmine_data = Ticket.all(:status_id => 5)
 
         @closed_count = redmine_data["issues"].count
       end
@@ -141,7 +152,8 @@ module Boardie
                  :status_id    => status_id,
                  :status_name  => status_name,
                  :assigned_to  => assigned,
-                 :workstream   => ws)
+                 :workstream   => ws,
+                 :updated_on   => issue['updated_on'])
       end
 
       def issues
