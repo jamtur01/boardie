@@ -20,9 +20,6 @@ module Boardie
     register Sinatra::StaticAssets
 
     configure :development do
-      log = File.new("log/development.log", "a")
-      STDOUT.reopen(log)
-      STDERR.reopen(log)
       load_configuration("config/config.yml", "APP_CONFIG")
     end
 
@@ -79,7 +76,7 @@ module Boardie
      expires 180, :public, :must_revalidate
      if @workstreams.include? name
        closed_count(name)
-       @stream_issues = Ticket.all(:workstream => name)
+       @stream_issues = Ticket.all(:workstream => name, :status_id.not => 5)
        erb :stream
      else
        status 404
@@ -110,9 +107,15 @@ module Boardie
 
       def get_issues
         @site = APP_CONFIG["redmine_site"]
-        redmine_data = JSON.parse(RestClient.get "#{@site}/issues.json", {:params => {'key' => "#{APP_CONFIG["redmine_key"]}", 'project_id' => "#{APP_CONFIG["redmine_project"]}", 'limit' => '200', 'status_id' => '*' }})
 
-        redmine_data["issues"].each do |issue|
+        redmine_data = []
+        # Pain in the ass! Redmine API wil only returns a max of 100 objects, no matter how high you set limit.
+        (1..5).each do |page|
+
+          redmine_data << JSON.parse(RestClient.get "#{@site}/issues.json", {:params => {'key' => "#{APP_CONFIG["redmine_key"]}", 'project_id' => "#{APP_CONFIG["redmine_project"]}", 'limit' => '100', 'status_id' => '*', page => page}})['issues']
+        end
+
+        redmine_data.flatten.each do |issue|
           create_record(issue)
         end
 
@@ -131,9 +134,8 @@ module Boardie
 
       def closed_count(stream)
         @site = APP_CONFIG["redmine_site"]
-        redmine_data = Ticket.all(:status_id => 5)
-
-        @closed_count = redmine_data["issues"].count
+        redmine_data = Ticket.all(:status_id => 5, :workstream => stream)
+        @closed_count = redmine_data.count
       end
 
       def create_record(issue)
