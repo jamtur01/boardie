@@ -115,6 +115,9 @@ module Boardie
           redmine_data << JSON.parse(RestClient.get "#{@site}/issues.json", {:params => {'key' => "#{APP_CONFIG["redmine_key"]}", 'project_id' => "#{APP_CONFIG["redmine_project"]}", 'limit' => '100', 'status_id' => '*', page => page}})['issues']
         end
 
+        # No matter its location numerically we always grab who is on point.
+        redmine_data << JSON.parse(RestClient.get "#{@site}/issues/15355.json", {:params => {'key' => "#{APP_CONFIG["redmine_key"]}", 'project_id' => "#{APP_CONFIG["redmine_project"]}"}})['issue']
+
         redmine_data.flatten.each do |issue|
           create_record(issue)
         end
