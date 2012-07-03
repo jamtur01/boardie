@@ -13,11 +13,11 @@
     <% @engineers.sort.each do |engine| %>
       <% owned = (@issues.find_all do |issue| (issue.assigned_to == engine) and (issue.status_id != 5) end).count %>
       <% case
-       when owned < 4
+       when owned < @quota
          color = 'label-success'
-       when owned == 4, owned == 5
+       when owned == @quota
          color = 'label-warning'
-       when owned > 5
+       when owned > @quota
         color = 'label-important'
       end %>
       <td class="td <%= color %>"><center><%= "#{owned}" %></center></td>
