@@ -38,9 +38,7 @@
           <a class="brand" href="/">Puppet Labs Operations Dashboard</a>
           <div class="nav-collapse">
             <ul class="nav">
-              <li class="active"><a href="https://projects.puppetlabs.com/projects/puppetlabs-internal-support/issues">Who's on Point: <%= (@issues.find { |i| i.ticket_id == 15355 }).assigned_to %></a></li>
-            </ul>
-            <ul class="nav">
+              <li class="active"><a href="https://projects.puppetlabs.com/projects/puppetlabs-internal-support/issues">Who's on Point: <%= @onpoint %></a></li>
               <li class="active"><a href="<%= url('/') %>">Home</a></li>
             </ul>
           </div><!--/.nav-collapse -->
