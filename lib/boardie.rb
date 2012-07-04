@@ -74,6 +74,7 @@ module Boardie
 
     get %r{/stream/(.+)} do |name|
      expires 180, :public, :must_revalidate
+     @onpoint = Ticket.all(:ticket_id => 15355).first.assigned_to
      if @workstreams.include? name
        closed_count(name)
        @stream_issues = Ticket.all(:workstream => name, :status_id.not => 5)
@@ -85,6 +86,7 @@ module Boardie
 
     get %r{/engineer/(.+)} do |name|
      expires 180, :public, :must_revalidate
+     @onpoint = Ticket.all(:ticket_id => 15355).first.assigned_to
      if @engineers.include? name
        @engineer_issues = Ticket.all(:assigned_to => name, :status_id.not => 5)
        erb :engineer
@@ -170,6 +172,7 @@ module Boardie
         @review     = Ticket.all(:status_id => '14') + Ticket.all(:status_id => '18')
         @prod       = Ticket.all(:status_id => '5')
         @quota      = APP_CONFIG['inprogress_quota']
+        @onpoint    = Ticket.all(:ticket_id => 15355).first.assigned_to
       end
     end
  end
