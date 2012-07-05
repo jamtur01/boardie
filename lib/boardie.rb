@@ -114,7 +114,9 @@ module Boardie
         # Pain in the ass! Redmine API wil only returns a max of 100 objects, no matter how high you set limit.
         (1..5).each do |page|
 
-          redmine_data << JSON.parse(RestClient.get "#{@site}/issues.json", {:params => {'key' => "#{APP_CONFIG["redmine_key"]}", 'project_id' => "#{APP_CONFIG["redmine_project"]}", 'limit' => '100', 'status_id' => '*', page => page}})['issues']
+          # You must query for open and closed tickets sperately as it is the only reliable way.
+          redmine_data << JSON.parse(RestClient.get "#{@site}/issues.json", {:params => {'key' => "#{APP_CONFIG["redmine_key"]}", 'project_id' => "#{APP_CONFIG["redmine_project"]}", 'limit' => '100', page => page, :status_id => 'open'}})['issues']
+          redmine_data << JSON.parse(RestClient.get "#{@site}/issues.json", {:params => {'key' => "#{APP_CONFIG["redmine_key"]}", 'project_id' => "#{APP_CONFIG["redmine_project"]}", 'limit' => '100', page => page, :status_id => 'closed'}})['issues']
         end
 
         # No matter its location numerically we always grab who is on point.
