@@ -1,7 +1,9 @@
 require 'sinatra'
 require 'sinatra/url_for'
 require 'sinatra/static_assets'
-require 'rest_client'
+require 'faraday'
+require 'faraday_middleware'
+require 'typhoeus'
 require 'data_mapper'
 require 'json'
 require 'yaml'
@@ -77,7 +79,7 @@ module Boardie
      @onpoint = Ticket.all(:ticket_id => 15355).first.assigned_to
      if @workstreams.include? name
        closed_count(name)
-       @stream_issues = Ticket.all(:workstream => name, :status_id.not => 5)
+       @stream_issues = Ticket.all(:workstream => name, :status_id.not => 5, :status_id.not => 6, :status_id.not => 7)
        erb :stream
      else
        status 404
@@ -88,7 +90,7 @@ module Boardie
      expires 180, :public, :must_revalidate
      @onpoint = Ticket.all(:ticket_id => 15355).first.assigned_to
      if @engineers.include? name
-       @engineer_issues = Ticket.all(:assigned_to => name, :status_id.not => 5)
+       @engineer_issues = Ticket.all(:assigned_to => name, :status_id.not => 5, :status_id.not => 6, :status_id.not => 7)
        erb :engineer
      else
        status 404
@@ -111,16 +113,30 @@ module Boardie
         @site = APP_CONFIG["redmine_site"]
 
         redmine_data = []
-        # Pain in the ass! Redmine API wil only returns a max of 100 objects, no matter how high you set limit.
-        (1..5).each do |page|
+        conn = Faraday.new(:url => @site) do |faraday|
+          faraday.adapter :typhoeus
+          faraday.use Faraday::Response::Logger
+        end
 
-          # You must query for open and closed tickets sperately as it is the only reliable way.
-          redmine_data << JSON.parse(RestClient.get "#{@site}/issues.json", {:params => {'key' => "#{APP_CONFIG["redmine_key"]}", 'project_id' => "#{APP_CONFIG["redmine_project"]}", 'limit' => '100', page => page, :status_id => 'open'}})['issues']
-          redmine_data << JSON.parse(RestClient.get "#{@site}/issues.json", {:params => {'key' => "#{APP_CONFIG["redmine_key"]}", 'project_id' => "#{APP_CONFIG["redmine_project"]}", 'limit' => '100', page => page, :status_id => 'closed'}})['issues']
+        (1..5).each do |page|
+          response = conn.get "/issues.json" do |request|
+            request.params['limit'] = 100
+            request.params['key'] = "#{APP_CONFIG["redmine_key"]}"
+            request.params['project_id'] = "#{APP_CONFIG["redmine_project"]}"
+            request.params['page'] = page
+            request.params['status_id'] = '*'
+          end
+
+          redmine_data << JSON.parse(response.body)['issues']
         end
 
         # No matter its location numerically we always grab who is on point.
-        redmine_data << JSON.parse(RestClient.get "#{@site}/issues/15355.json", {:params => {'key' => "#{APP_CONFIG["redmine_key"]}", 'project_id' => "#{APP_CONFIG["redmine_project"]}"}})['issue']
+        response = conn.get "/issues/15355.json" do |request|
+          request.params['key'] = "#{APP_CONFIG["redmine_key"]}"
+          request.params['project_id'] = "#{APP_CONFIG["redmine_project"]}"
+        end
+
+        redmine_data << JSON.parse(response.body)['issue']
 
         redmine_data.flatten.each do |issue|
           create_record(issue)
@@ -171,8 +187,8 @@ module Boardie
         @blocked    = Ticket.all(:status_id => '11') + Ticket.all(:status_id => '12')
         @inprogress = Ticket.all(:status_id => '8') & Ticket.all(:assigned_to.not => nil)
         @overquota  = true if @inprogress.count > (APP_CONFIG["inprogress_quota"] * @engineers.count)
-        @review     = Ticket.all(:status_id => '14') + Ticket.all(:status_id => '18')
-        @prod       = Ticket.all(:status_id => '5')
+        @review     = Ticket.all(:status_id => '14')
+        @prod       = Ticket.all(:status_id => '18')
         @quota      = APP_CONFIG['inprogress_quota']
         @onpoint    = Ticket.all(:ticket_id => 15355).first.assigned_to
       end
