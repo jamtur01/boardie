@@ -23,4 +23,8 @@ Gem::Specification.new do |s|
   s.add_dependency(%q<sqlite3>, [">= 0"])
   s.add_dependency(%q<data_mapper>, [">= 0"])
   s.add_dependency(%q<dm-sqlite-adapter>, [">= 0"])
+  s.add_dependency(%q<faraday>, [">= 0"])
+  s.add_dependency(%q<faraday_middleware>, [">= 0"])
+  s.add_dependency(%q<typhoeus>, [">= 0"])
 end
+
